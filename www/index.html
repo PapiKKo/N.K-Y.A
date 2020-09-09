@@ -1,0 +1,137 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="/css/starter-sample.css" />
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  </head>
+  <body>
+<button onclick="testDeviceOrientation()">Test Device Orientation</button>
+<button onclick="testDeviceMotion()">Test Device Motion</button>
+<button onclick="stop()">停止</button>
+  <button onclick="play()" id="play">再生</button>
+<br /><br />
+<div id="result"></div>
+    <script>
+    /*  
+  var music = new Audio();
+  function init() {
+    music.preload = "auto";
+    music.src = "down1.mp3";
+    music.load();
+  }
+  function play() {
+    music.currentTime = 0;
+    music.loop = false;
+    music.play();
+  }
+  function stop() {
+    music.pause();
+    music.currentTime = 0;
+  }
+  init();
+*/
+function testDeviceOrientation() {
+  if (typeof DeviceOrientationEvent !== 'function') {
+    return setResult('DeviceOrientationEvent not detected')
+  }
+  if (typeof DeviceOrientationEvent.requestPermission !== 'function') {
+    window.addEventListener('deviceorientation', handler)
+    return setResult('DeviceOrientationEvent.requestPermission not detected')
+  }
+  DeviceOrientationEvent.requestPermission().then(function(permissionState) {
+    if (permissionState === 'granted') {
+        // 許可を得られた場合、deviceorientationをイベントリスナーに追加
+        console.log("granted.");
+        window.addEventListener('deviceorientation', handler)
+      } else {
+        // 許可を得られなかった場合の処理
+        console.log(permissionState);
+      }
+    return setResult(result);
+  });
+}
+
+function testDeviceMotion() {
+  if (typeof DeviceMotionEvent !== 'function') {
+    return setResult2('DeviceMotionEvent not detected')
+  }
+  if (typeof DeviceMotionEvent.requestPermission !== 'function') {
+    window.addEventListener('devicemotion', handler2)
+    return setResult2('DeviceMotionEvent.requestPermission not detected')
+  }
+  DeviceMotionEvent.requestPermission().then(function(permissionState) {
+    if (permissionState === 'granted') {
+        // 許可を得られた場合、devicemotionをイベントリスナーに追加
+        console.log("granted.");
+        window.addEventListener('devicemotion', handler2)
+      } else {
+        // 許可を得られなかった場合の処理
+        console.log(permissionState);
+      }
+    return setResult2(result);
+  });
+}
+
+function setResult(result) {
+  document.getElementById('result').innerHTML = 'RESULT: ' + result;
+}
+function setResult2(result) {
+  document.getElementById('result').innerHTML = 'RESULT: ' + result;
+}
+
+function handler(event){
+          // deviceorientationのイベント処理
+          let alpha = event.alpha;// 充電下で 
+          let beta = event.beta;// X -90 up +90 down スマホ画面うえ０、下−１８０
+          let gamma = event.gamma;// Y -90 left +90 right 音量した９０、電源した−９０
+          let str_a = "alpha: " + alpha +",  ";
+          let str_b = "beta: " + beta + ",  ";
+          let str_g = "gamma: " + gamma;
+          let string_b = "床に対して垂直"; //beta = 0 中間
+          let string_g = "傾きなし"; //gamma = 90 が中間
+          if (beta > 100 && gamma < -10 || beta < 80 && gamma < 90 && gamma > 20) {
+            string_g = "右入力";
+          }
+          else if (beta > 100 && gamma < 90 && gamma > 10 || beta < 80 && gamma < -20) {
+            string_g = "左入力";
+          }
+          if (beta > 110) {
+            string_b = "下入力";
+          }
+          else if (beta <= 70) {
+            string_b = "上入力";
+          }
+            setResult("<br>" + str_a +"<br>"+ str_b +"<br>"+ str_g + "<br>" + string_b + "<br>" + string_g);
+            console.log(str_a + str_b + str_g +", "+ string_b +", "+ string_g); 
+}
+function handler2(event){
+          let a_x = event.acceleration.x;
+          var x_value = Math.floor(a_x);
+          let a_y = event.acceleration.y;
+          var y_value = Math.floor(a_y);
+          let a_z = event.acceleration.z;
+          var z_value = Math.floor(a_z);
+          const music = new Audio('down1.mp3');
+          if (x_value > 5 || x_value < -5) {
+            console.log("ボタン入力");
+            music.play();
+          }
+          if (y_value > 5 || y_value < -5) {
+            console.log("ボタン入力");
+            music.play();
+          }
+          if (z_value > 5 || z_value < -5) {
+            console.log("ボタン入力");
+            music.play();
+          }
+          setResult2("<br>" + x_value + "<br>" + y_value + "<br>" + z_value);
+
+}
+    </script>
+  </body>
+</html>
