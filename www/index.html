@@ -32,30 +32,11 @@
   <body>
 <button onclick="testDeviceOrientation()">Test Device Orientation</button>
 <button onclick="testDeviceMotion()">Test Device Motion</button>
-<button onclick="stop()">停止</button>
-  <button onclick="play()" id="play">再生</button>
 <br /><br />
 <div id="result"></div>
 <div id="wrap"></div>
     <script>
-    /*  
-  var music = new Audio();
-  function init() {
-    music.preload = "auto";
-    music.src = "down1.mp3";
-    music.load();
-  }
-  function play() {
-    music.currentTime = 0;
-    music.loop = false;
-    music.play();
-  }
-  function stop() {
-    music.pause();
-    music.currentTime = 0;
-  }
-  init();
-*/
+    
 function testDeviceOrientation() {
   if (typeof DeviceOrientationEvent !== 'function') {
     return setResult('DeviceOrientationEvent not detected')
@@ -136,8 +117,8 @@ function handler(event){
             wrap.style.backgroundColor = '#0000cd';//blue
 
           }*/
-          const th = 30;
-        if (beta < -th){
+          const th = 20;
+        if (beta <= -10){
           if(gamma < -th){
             //up left
             string_b = "上入力";
@@ -178,31 +159,30 @@ function handler(event){
             string_b = "床に対して平行";
 						string_g = "左右の傾きなし";
         }
-            setResult("<br>" + str_a +"<br>"+ str_b +"<br>"+ str_g + "<br>" + string_b + "<br>" + string_g);
+            setResult("<br>" + str_a +"<br>"+ str_b +"<br>"+ str_g + "<br>" + string_b + "<br>" + string_g );
             console.log(str_a + str_b + str_g +", "+ string_b +", "+ string_g); 
 }
 function handler2(event){
           let a_x = event.acceleration.x;
-          var x_value = Math.floor(a_x);
+          //var x_value = Math.floor(a_x);
           let a_y = event.acceleration.y;
-          var y_value = Math.floor(a_y);
+          //var y_value = Math.floor(a_y);
           let a_z = event.acceleration.z;
-          var z_value = Math.floor(a_z);
-          const music = new Audio('down1.mp3');
-          if (x_value > 5 || x_value < -5) {
+          //var z_value = Math.floor(a_z);
+          //const music = new Audio('down1.mp3');
+          if (a_x > 5 || a_x < -5) {
             console.log("ボタン入力");
-            music.play();
+            //music.play();
           }
-          if (y_value > 5 || y_value < -5) {
+          if (a_y > 5 || a_y < -5) {
             console.log("ボタン入力");
-            music.play();
+            //music.play();
           }
-          if (z_value > 5 || z_value < -5) {
+          if (a_z > 5 || a_z < -5) {
             console.log("ボタン入力");
-            music.play();
+            //music.play();
           }
-          setResult2("<br>" + x_value + "<br>" + y_value + "<br>" + z_value);
-
+          setResult2("<br>" + a_x + "<br>" + a_y + "<br>" + a_z);
 }
     </script>
   </body>
